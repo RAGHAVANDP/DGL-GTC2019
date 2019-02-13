@@ -42,6 +42,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       graphviz-dev \
       libgraphviz-dev \
       ca-certificates \
+      ffmpeg \
       unzip && \
     pip install -U \
       torch \
@@ -52,14 +53,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       sklearn \
       graphviz \
       nltk \
-      requests[security] \
-      cython
+      requests[security]
 
 # install mxnet nightly build
 RUN pip install --pre mxnet-cu90
 
 # install dgl
+# FIXME: dgl-0.1.3 does not have MiniGCDataset
 RUN pip install dgl
+
+# remove pathlib package to use builtin pathlib
+RUN pip uninstall pathlib -y
 
 ENV PYTHONWARNINGS="ignore"
 #RUN echo "import warnings; warnings.filterwarnings('ignore')" >> /root/.ipython/profile_default/startup/disable_warnings.py
