@@ -58,9 +58,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # install mxnet nightly build
 RUN pip install --pre mxnet-cu90
 
-# install dgl
-# FIXME: dgl-0.1.3 does not have MiniGCDataset
-RUN pip install dgl
+# install dgl (latest)
+RUN cd /workspace && git clone --recursive https://github.com/dmlc/dgl.git
+RUN cd /workspace/dgl && mkdir build && cd build && cmake .. && make -j$(nproc)
+RUN cd /workspace/dgl/python && python setup.py install
 
 # remove pathlib package to use builtin pathlib
 RUN pip uninstall pathlib -y
