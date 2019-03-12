@@ -59,9 +59,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip install --pre mxnet-cu90
 
 # install dgl (latest)
-RUN cd /workspace && git clone --recursive https://github.com/dmlc/dgl.git
-RUN cd /workspace/dgl && mkdir build && cd build && cmake .. && make -j$(nproc)
-RUN cd /workspace/dgl/python && python setup.py install
+RUN pip install dgl==0.2
 
 # remove pathlib package to use builtin pathlib
 RUN pip uninstall pathlib -y
